@@ -8,6 +8,7 @@ var ghostGroup;
 function preload(){
     key1=loadImage("key-removebg-preview.png")
     ghost1=loadImage("op.png")
+    wonImg=loadImage("won.jpg")
     
 }
 
@@ -34,6 +35,12 @@ function setup(){
     enemy4=createSprite(397,235)
     enemy5=createSprite(357,235)
     enemy6=createSprite(327,235)
+
+
+    won=createSprite(400,300)
+    won.addImage(wonImg)
+    won.visible=false;
+
     enemy1.velocityX=3
     enemy2.velocityX=4
     enemy3.velocityX=4
@@ -43,9 +50,12 @@ function setup(){
     key_1=createSprite(360,90)
     key_2=createSprite(712,337)
     key_3=createSprite(530,368)
+    key_4=createSprite(340,410)
     key_1.addImage(key1)
     key_2.addImage(key1)
     key_3.addImage(key1)
+    key_4.addImage(key1)
+    
     enemy1.addImage(ghost1)
     enemy2.addImage(ghost1)
     enemy3.addImage(ghost1)
@@ -55,6 +65,7 @@ function setup(){
     key_1.scale=0.08;
     key_2.scale=0.08
     key_3.scale=0.08
+    key_4.scale=0.08
    // key.debug=true
     ball.shapeColor = "green";
     log1.shapeColor= "red";
@@ -114,27 +125,40 @@ function draw(){
 
 
      if (ball.collide(key_1)) {
-         key_1.visible=false;
-         ball.x=ball.x+5
-         
+         key_1.destroy()
+        // ball.x=ball.x+5
+
          log9.destroy();
          enemy1.destroy();
           keysCollected++
       }
       if (ball.isTouching(key_2)) {
           key_2.destroy();
+          log10.destroy();
+          enemy2.destroy()
           keysCollected++
       }
       if (ball.isTouching(key_3)) {
           key_3.destroy();
+          enemy3.destroy();
           keysCollected++
       }
+
+      if (ball.isTouching(key_4)) {
+        key_4.destroy();
+        enemy4.destroy();
+        enemy5.destroy();
+        enemy6.destroy();
+        keysCollected++
+        mazeGroup.destroyEach()
+        ball.destroy();
+        won.visible=true
+    }
 
       if (ball.isTouching(ghostGroup)) {
           ball.x=100
           ball.y=400
-          key_1.visible=true;
-          keysCollected=0
+          //key_1.visible=true;
       }
     enemy1.bounceOff(mazeGroup)
     enemy1.bounceOff(edges)
